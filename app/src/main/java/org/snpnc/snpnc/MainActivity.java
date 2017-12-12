@@ -17,22 +17,76 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     public Dialog dialog;
     public AlertDialog.Builder builder;
     public AlertDialog alert;
     int width,height;
+    public ArrayList<Rotation> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //
         toolbar.setTitle("SN PNC");
-
         setSupportActionBar(toolbar);
 
+        list = new ArrayList<Rotation>();
+
+        Rotation rotation = new Rotation();
+        rotation.setCont("AMERIQUE NORD");
+        rotation.setEsc("ATL");
+        rotation.setOn("3");
+        rotation.setAnumvol("682");
+        rotation.setAtpsvol("09H55");
+        rotation.setNbrp("2");
+        rotation.setIrmenu("51,01");
+        rotation.setTotalir("102,02");
+        rotation.setEsc("26H50");
+        rotation.setRnumvol("681");
+        rotation.setRtpsvol("08H15");
+        rotation.setRpc("3 RNN");
+        rotation.setPdj("");
+        rotation.setChcdg("Si retard > à 2H45mn");
+        list.add((rotation));
+
+        Rotation rotationx = new Rotation();
+        rotationx.setCont("AMERIQUE NORD");
+        rotationx.setEsc("ATL");
+        rotationx.setOn("3");
+        rotationx.setAnumvol("688");
+        rotationx.setAtpsvol("09H50");
+        rotationx.setNbrp("2");
+        rotationx.setIrmenu("51,01");
+        rotationx.setTotalir("102,02");
+        rotationx.setEsc("26h30");
+        rotationx.setRnumvol("689");
+        rotationx.setRtpsvol("08H20");
+        rotationx.setRpc("3 RNN");
+        rotationx.setPdj("");
+        rotationx.setChcdg("Si retard > à 2H40mn");
+        list.add((rotationx));
+
+        Rotation rotationy = new Rotation();
+        rotationy.setCont("AMERIQUE NORD");
+        rotationy.setEsc("BOS");
+        rotationy.setOn("3");
+        rotationy.setAnumvol("334");
+        rotationy.setAtpsvol("08H05");
+        rotationy.setNbrp("2");
+        rotationy.setIrmenu("51,01");
+        rotationy.setTotalir("102,02");
+        rotationy.setEsc("26H00");
+        rotationy.setRnumvol("333");
+        rotationy.setRtpsvol("06H35");
+        rotationy.setRpc("2 RNN");
+        rotationy.setPdj("");
+        rotationy.setChcdg("Si retard > à 3H25mn");
+        list.add((rotationy));
 
         Button angryButton = (Button) findViewById(R.id.btnRegion);
         angryButton.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +172,23 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
     public void tutu() {
+
+        /*
+        ArrayList<Rotation> secondList = new ArrayList<Rotation>();
+
+        for(Rotation article : list)
+        {
+// or equalsIgnoreCase or whatever your conditon is
+            if (article.getEsc().equalsIgnoreCase("ATL")) {
+// do something
+                secondList.add(article);
+            }
+        }
+        Log.i("KK","secondList.size( ) "+secondList.toString());
+*/
+
         CharSequence colors[] = new CharSequence[] {"red", "green", "blue", "black"};
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a color");

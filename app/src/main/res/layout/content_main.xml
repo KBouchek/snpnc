@@ -8,11 +8,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="org.snpnc.snpnc.MainActivity"
     tools:showIn="@layout/activity_main">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+
 
     <Button
         android:id="@+id/btnRegion"
@@ -69,5 +73,105 @@
             android:layout_marginTop="10dp"
             android:layout_below="@id/btnOn"
             />
+
+
+
+
+
+    <Button
+        android:id="@+id/btnVoppp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="Vols"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/buttonshape"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnVols"
+        />
+    <Button
+        android:id="@+id/btnVoplllpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="Vols"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/buttonshape"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnVoppp"
+        />
+    <Button
+        android:id="@+id/btnVoplllkkklpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="Vols"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/buttonshape"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnVoplllpp"
+        />
+    <Button
+        android:id="@+id/btnVoplllkkklkkkpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="Vols"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/buttonshape"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnVoplllkkklpp"
+        />
+    <Button
+    android:id="@+id/btnVoplllkkkkkklpp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="#FFFFFF"
+    android:text="Vols"
+    android:layout_alignParentTop="true"
+    android:background="@drawable/buttonshape"
+    android:layout_marginLeft="@dimen/fab_margin"
+    android:layout_marginRight="@dimen/fab_margin"
+    android:layout_marginTop="10dp"
+    android:layout_below="@id/btnVoplllkkklkkkpp"
+    />
+
+    <Button
+        android:id="@+id/btnVoplllkkkkkkooolpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="Vols"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/buttonshape"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnVoplllkkkkkklpp"
+        />
+    <Button
+        android:id="@+id/btnVoplllkkkkuuukkooolpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="Vols"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/buttonshape"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnVoplllkkkkkkooolpp"
+        />
     </LinearLayout>
+        </ScrollView>
+
+
 </android.support.constraint.ConstraintLayout>

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         rotation.setNbrp("2");
         rotation.setIrmenu("51,01");
         rotation.setTotalir("102,02");
-        rotation.setEsc("26H50");
+        rotation.setTep("26H50");
         rotation.setRnumvol("681");
         rotation.setRtpsvol("08H15");
         rotation.setRpc("3 RNN");
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         rotationx.setNbrp("2");
         rotationx.setIrmenu("51,01");
         rotationx.setTotalir("102,02");
-        rotationx.setEsc("26h30");
+        rotationx.setTep("26h30");
         rotationx.setRnumvol("689");
         rotationx.setRtpsvol("08H20");
         rotationx.setRpc("3 RNN");
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         rotationy.setNbrp("2");
         rotationy.setIrmenu("51,01");
         rotationy.setTotalir("102,02");
-        rotationy.setEsc("26H00");
+        rotationy.setTep("26H00");
         rotationy.setRnumvol("333");
         rotationy.setRtpsvol("06H35");
         rotationy.setRpc("2 RNN");
@@ -173,21 +173,34 @@ public class MainActivity extends AppCompatActivity {
     }
     public void tutu() {
 
-        /*
+
         ArrayList<Rotation> secondList = new ArrayList<Rotation>();
-
-        for(Rotation article : list)
-        {
-// or equalsIgnoreCase or whatever your conditon is
-            if (article.getEsc().equalsIgnoreCase("ATL")) {
-// do something
-                secondList.add(article);
-            }
+  /**/
+         for (int counter = 0; counter < list.size(); counter++) {
+             Rotation r = list.get(counter);
+             if (r.getEsc() == "ATL") {
+                 Log.i("KK", "== " + r.getAnumvol());
+                 secondList.add(r);
+             }
         }
-        Log.i("KK","secondList.size( ) "+secondList.toString());
-*/
+        Log.i("KK", "== " + secondList.size());
+        CharSequence colors[] = new CharSequence[secondList.size()];
+        for (int counter = 0; counter < secondList.size(); counter++) {
+            Rotation r = secondList.get(counter);
+            colors[counter]= r.getAnumvol();
+        }
+      //  for(Rotation article : list)
+        //{
+// or equalsIgnoreCase or whatever your conditon is
+         //   if (article.getEsc().equalsIgnoreCase("ATL")) {
+// do something
+                //secondList.add(article);
+          //  }
+      //  }
 
-        CharSequence colors[] = new CharSequence[] {"red", "green", "blue", "black"};
+
+
+      //  CharSequence colors[] = new CharSequence[] {"red", "green", "blue", "black"};
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

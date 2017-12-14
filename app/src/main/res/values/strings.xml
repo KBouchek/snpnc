@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">SNPNC</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_fly_ir">FlyIr</string>
+
+    <string name="ame">AMÉRIQUE NORD</string>
+    <string name="amo">AFRIQUE / MOYEN-ORIENT</string>
+    <string name="asi">ASIE</string>
+    <string name="acoi">ANTILLES-CARAÏBES-OCEAN INDIEN</string>
+    <string name="amsu">AMÉRIQUE SUD</string>
 </resources>

@@ -1,8 +1,6 @@
 package org.snpnc.snpnc;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,90 +9,540 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class MainActivity extends AppCompatActivity {
-
+public class FlyIr extends AppCompatActivity {
     public Dialog dialog;
     public AlertDialog.Builder builder;
     public AlertDialog alert;
+    public TextView tv_region,tv_esc,tv_on,tv_vols;
+    public Button btnRegion,btnEsc,btnOn,btnVols;
+
     int width,height;
     public ArrayList<Rotation> list;
+    public String[] name_regions,name_regions_short;
+    public String[] name_escales;
+    public String[] name_on;
+    public String[] name_vols,vol_string_array;
+    public TableLayout table_layout_result;
+    public TextView result_atpsvol,result_rtpsvol,result_somme_tpsvol,
+            result_repos_escale,
+            result_rpc,
+            result_ir_menufrais,result_ir_total,
+            result_ptd_ircdg,
+            result_cha_cdg;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_flyir);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("SN PNC");
         setSupportActionBar(toolbar);
 
-
-
-
-       /* list = new ArrayList<Rotation>();
-        initEscales();*/
-
-
-        Button angryButton = (Button) findViewById(R.id.btnRegion);
-       // Button btnDest = (Button)findViewById(R.id.btnDest);
-      /* angryButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                tutu();
-            }
-        });*/
-        angryButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, FlyIr.class);
-                startActivity(intent);
-            }
-        });
+setTitle("SNPNC: FlyIR");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                //showDialog();
-                //tutu();
+               /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+
+            }
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        list = new ArrayList<Rotation>();
+
+         btnRegion = (Button) findViewById(R.id.btnRegion);
+         btnEsc = (Button)findViewById(R.id.btnEsc);
+         btnOn = (Button)findViewById(R.id.btnOn);
+         btnVols = (Button)findViewById(R.id.btnVols);
+
+         tv_region = (TextView)findViewById(R.id.regx) ;
+         tv_esc = (TextView)findViewById(R.id.esc) ;
+         tv_on = (TextView)findViewById(R.id.on) ;
+         tv_vols = (TextView)findViewById(R.id.vols) ;
+
+        table_layout_result = (TableLayout)findViewById(R.id.table_layout_result);
+
+        result_atpsvol = (TextView) findViewById(R.id.result_atpsvol);
+        result_rtpsvol = (TextView) findViewById(R.id.result_rtpsvol);
+        result_somme_tpsvol = (TextView) findViewById(R.id.result_somme_tpsvol);
+        result_repos_escale = (TextView) findViewById(R.id.result_repos_escale);
+        result_rpc = (TextView) findViewById(R.id.result_rpc);
+        result_ir_menufrais = (TextView) findViewById(R.id.result_ir_menufrais);
+        result_ir_total = (TextView) findViewById(R.id.result_ir_total);
+        result_ptd_ircdg = (TextView) findViewById(R.id.result_ptd_ircdg);
+        result_cha_cdg = (TextView) findViewById(R.id.result_cha_cdg);
+
+
+        width = (int)(getResources().getDisplayMetrics().widthPixels*0.80);
+        height = (int)(getResources().getDisplayMetrics().heightPixels*0.70);
+
+
+        initEscalesx();
+        initVariables();
+
+        btnRegion.setText("Région");
+        tv_region.setText("");
+
+        btnEsc.setText("Escale");
+        btnEsc.setVisibility(View.GONE);
+        tv_esc.setText("");
+
+        btnOn.setText("On");
+        btnOn.setVisibility(View.GONE);
+        tv_on.setText("");
+
+        btnVols.setText("Vols");
+        btnVols.setVisibility(View.GONE);
+        tv_vols.setText("");
+
+        btnRegion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickRegion();
+            }
+        });
+        btnEsc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickEscale();
+            }
+        });
+        btnOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickOn();
+            }
+        });
+        btnVols.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickVols();
             }
         });
 
-         width = (int)(getResources().getDisplayMetrics().widthPixels*0.80);
-         height = (int)(getResources().getDisplayMetrics().heightPixels*0.70);
-
-
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void clickRegion() {
+
+        tv_region.setText("");
+        btnRegion.setText("Région");
+
+        btnEsc.setText("Escale");
+        btnEsc.setVisibility(View.GONE);
+        tv_esc.setText("");
+
+        btnOn.setText("On");
+        btnOn.setVisibility(View.GONE);
+        tv_on.setText("");
+
+        btnVols.setText("Vols");
+        btnVols.setVisibility(View.GONE);
+        tv_vols.setText("");
+
+        table_layout_result.setVisibility(View.GONE);
+
+        dialog = new Dialog(this);
+        builder = new AlertDialog.Builder( this );
+
+        ListView listView = new ListView(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String regionid = name_regions[position];
+                String regionid_short = name_regions_short[position];
+                Log.i("KK", "== position " + position+ " regionid = "+ regionid+ " name_regions_short "+regionid_short);
+                tv_region.setText(regionid_short);
+                btnRegion.setText(regionid);
+                btnEsc.setVisibility(View.VISIBLE);
+
+                alert.cancel();
+            }
+        });
+
+        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,name_regions));
+        builder.setView(listView);
+        alert = builder.create();
+        alert.getWindow().setLayout(width, height);
+        alert.show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void clickEscale() {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        tv_esc.setText("");
+
+        btnOn.setText("On");
+        btnOn.setVisibility(View.GONE);
+        tv_on.setText("");
+
+        btnVols.setText("Vols");
+        btnVols.setVisibility(View.GONE);
+        tv_vols.setText("");
+
+        table_layout_result.setVisibility(View.GONE);
+
+        ArrayList<Rotation> local_rotations = new ArrayList<>();
+        String region_string;
+        if(tv_region.getText() != null && tv_region.getText() != ""){
+            region_string = tv_region.getText().toString();
+        } else return;
+
+        for(int i=0; i<list.size(); i++) {
+           if(list.get(i).getCont().equals(region_string)) {
+                local_rotations.add(list.get(i));
+            }
+        }
+        int nb_resultats_escales = local_rotations.size();
+        name_escales = new String[nb_resultats_escales];
+        for (int i = 0; i < nb_resultats_escales;i++) {
+            name_escales[i] = local_rotations.get(i).getEsc();
         }
 
-        return super.onOptionsItemSelected(item);
+        List<String> listlocal = Arrays.asList(name_escales);
+        Set<String> set = new HashSet<String>(listlocal);
+        name_escales = new String[set.size()];
+        set.toArray(name_escales);
+
+        Arrays.sort(name_escales);
+
+        dialog = new Dialog(this);
+        builder = new AlertDialog.Builder( this );
+
+        ListView listView = new ListView(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String escale = name_escales[position];
+                tv_esc.setText(escale);
+                btnEsc.setText(escale);
+                int[] num_rep = getnumRotation_reg_esc(tv_region.getText().toString(),escale);
+                Log.i("KK", "num reponses  = "+num_rep[0]+  " / = "+num_rep[1]);
+                if(num_rep[0] <= 0) {alert.cancel(); return;}
+                if(num_rep[0] == 1) {display_rest(num_rep[1],false);alert.cancel(); return;}
+                if(num_rep[0] > 1) {
+
+                    int[] numons = getnumOn_reg_esc(tv_region.getText().toString(),escale);
+                    if(numons[0] == 1) {
+                        btnOn.setEnabled(false);
+                        btnOn.setVisibility(View.VISIBLE);
+                        btnOn.setText(numons[1]+" ON");
+                        tv_on.setText(""+numons[1]);
+
+                        btnVols.setVisibility(View.VISIBLE);
+                        btnVols.setEnabled(true);
+                        tv_vols.setText("");
+                        //display_rest(numons[1]);
+                        alert.cancel();
+                        return;
+                    }
+                    btnOn.setEnabled(true);
+                    btnOn.setVisibility(View.VISIBLE);
+                    //btnOn.setEnabled(false);
+                    //btnVols.setEnabled(false);
+                    alert.cancel();
+                    return;
+                }
+
+
+            }
+        });
+
+        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,name_escales));
+        builder.setView(listView);
+        alert = builder.create();
+        alert.getWindow().setLayout(width, height);
+        alert.show();
     }
+
+    public void clickOn() {
+        Log.i("KK", " clickOn Okkkkkkkkkkk");
+     tv_on.setText("");
+
+      btnVols.setText("Vols");
+      btnVols.setVisibility(View.GONE);
+      tv_vols.setText("");
+
+        table_layout_result.setVisibility(View.GONE);
+
+        ArrayList<Rotation> local_rotations = new ArrayList<>();
+        String region_string, escale_string;
+
+        if(tv_region.getText() != null && tv_region.getText() != "" && tv_esc.getText() != null && tv_esc.getText() != ""){
+            region_string = tv_region.getText().toString();
+            escale_string = tv_esc.getText().toString();
+        } else return;
+        Log.i("KK", "******* 1111");
+
+        Rotation r = new Rotation();
+        for(int i=0; i<list.size(); i++) {
+            if(list.get(i).getCont().equals(region_string) && list.get(i).getEsc().equals(escale_string)) {
+                local_rotations.add(list.get(i));
+                r = list.get(i);
+            }
+        }
+
+        if(local_rotations.size() == 1) {
+            display_IR_for_rotation(r);
+            return;
+        }
+
+        Log.i("KK", "******* "+local_rotations);
+        int nb_resultats_on = local_rotations.size();
+        name_on = new String[nb_resultats_on];
+        for (int i = 0; i < nb_resultats_on;i++) {
+            name_on[i] = local_rotations.get(i).getOn();
+        }
+
+       List<String> listlocal = Arrays.asList(name_on);
+        Set<String> set = new HashSet<String>(listlocal);
+        name_on = new String[set.size()];
+        set.toArray(name_on);
+
+        Arrays.sort(name_on);
+
+        dialog = new Dialog(this);
+        builder = new AlertDialog.Builder( this );
+
+        ListView listView = new ListView(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String on = name_on[position];
+                tv_on.setText(on);
+                btnOn.setText(on);
+
+                ArrayList<Rotation> local_rotations = new ArrayList<>();
+                int found_rot_id = 0;
+                for(int i=0; i<list.size(); i++) {
+                    if(list.get(i).getCont().equals(tv_region.getText().toString())
+                            && list.get(i).getEsc().equals(tv_esc.getText().toString())
+                             && list.get(i).getOn().equals(on)) {
+                        local_rotations.add(list.get(i));
+                        found_rot_id = i;
+                    }
+                }
+                int nb_resultats_vols = local_rotations.size();
+                if(nb_resultats_vols == 1) {
+                    display_rest(found_rot_id,true);alert.cancel();return;
+                }
+                //if(name_on.length == 1) {Log.i("KK", "1 ON");}
+                /*int[] num_rep = getnumRotation_reg_esc(tv_region.getText().toString(),escale);
+                Log.i("KK", "num reponses  = "+num_rep[0]+  " / = "+num_rep[1]);
+                if(num_rep[0] <= 0) return;
+                if(num_rep[0] == 1) {display_rest(num_rep[1]); return;}
+                if(num_rep[0] > 1) {
+                    display_rest(num_rep[1]); return;
+                }
+
+                btnOn.setVisibility(View.VISIBLE);
+                btnOn.setEnabled(false);*/
+                btnVols.setVisibility(View.VISIBLE);
+                btnVols.setEnabled(true);
+                alert.cancel();
+            }
+        });
+
+        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,name_on));
+        builder.setView(listView);
+        alert = builder.create();
+        alert.getWindow().setLayout(width, height);
+        alert.show();
+    }
+
+    public void clickVols() {
+        tv_vols.setText("");
+        table_layout_result.setVisibility(View.GONE);
+
+        ArrayList<Rotation> local_rotations = new ArrayList<>();
+        String region_string, escale_string,on_string;
+        if(tv_region.getText() != null && tv_region.getText() != "" && tv_esc.getText() != null && tv_esc.getText() != ""  && tv_on.getText() != null && tv_on.getText() != ""){
+            region_string = tv_region.getText().toString();
+            escale_string = tv_esc.getText().toString();
+            on_string= tv_on.getText().toString();
+        } else return;
+
+        for(int i=0; i<list.size(); i++) {
+            if(list.get(i).getCont().equals(region_string) && list.get(i).getEsc().equals(escale_string) && list.get(i).getOn().equals(on_string)) {
+                local_rotations.add(list.get(i));
+            }
+        }
+        int nb_resultats_vols = local_rotations.size();
+
+        name_vols = new String[nb_resultats_vols];
+        vol_string_array = new String[nb_resultats_vols];
+        Rotation last_visited_id = new Rotation();
+        for (int i = 0; i < nb_resultats_vols;i++) {
+            name_vols[i] = "AF"+local_rotations.get(i).getAnumvol()+" - AF"+local_rotations.get(i).getRnumvol();
+            vol_string_array[i] = local_rotations.get(i).getAnumvol()+"-"+local_rotations.get(i).getRnumvol();
+            last_visited_id = local_rotations.get(i);
+        }
+        if(nb_resultats_vols <= 0) return;
+        if(nb_resultats_vols == 1) {display_IR_for_rotation(last_visited_id);return;}
+        Arrays.sort(name_vols);
+
+        dialog = new Dialog(this);
+        builder = new AlertDialog.Builder( this );
+
+        final ListView listView = new ListView(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String vol = name_vols[position];
+                String vol_tv =  vol_string_array[position];
+                btnVols.setText(vol);
+                tv_vols.setText(vol_tv);
+
+                Rotation r = new Rotation();
+                for(int i=0; i<list.size(); i++) {
+                    String vol_search = list.get(i).getAnumvol()+"-"+list.get(i).getRnumvol();
+                    if(list.get(i).getCont().equals(tv_region.getText().toString())
+                             && list.get(i).getEsc().equals(tv_esc.getText().toString())
+                            && vol_search.equals(vol_tv)) {
+                        r = list.get(i);
+                        display_IR_for_rotation(r);
+                        alert.cancel();
+                        return;
+                    }
+                }
+                //tv_on.setText(on);
+                //btnOn.setText(on);
+                //if(name_on.length == 1) {Log.i("KK", "1 ON");}
+                /*int[] num_rep = getnumRotation_reg_esc(tv_region.getText().toString(),escale);
+                Log.i("KK", "num reponses  = "+num_rep[0]+  " / = "+num_rep[1]);
+                if(num_rep[0] <= 0) return;
+                if(num_rep[0] == 1) {display_rest(num_rep[1]); return;}
+                if(num_rep[0] > 1) {
+                    display_rest(num_rep[1]); return;
+                }
+
+                btnOn.setVisibility(View.VISIBLE);
+                btnOn.setEnabled(false);*/
+                //btnVols.setVisibility(View.VISIBLE);
+                //btnVols.setEnabled(true);
+                alert.cancel();
+            }
+        });
+
+        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,name_vols));
+        builder.setView(listView);
+        alert = builder.create();
+        alert.getWindow().setLayout(width, height);
+        alert.show();
+    }
+    /*****************************/
+    /***** fcts graphiques *******/
+    /*****************************/
+    public void display_rest(int id,boolean onx){
+        Rotation r = list.get(id);
+
+
+        btnOn.setVisibility(View.VISIBLE);
+        btnOn.setText(r.getOn()+" ON");
+        btnOn.setEnabled(onx);
+
+        tv_on.setText(r.getOn());
+        btnVols.setText("AF"+r.getAnumvol()+" - AF"+r.getRnumvol());
+        btnVols.setVisibility(View.VISIBLE);
+        btnVols.setEnabled(false);
+
+        tv_vols.setText(r.getAnumvol()+"-"+r.getRnumvol());
+
+        display_IR_for_rotation(r);
+    }
+
+    public void display_IR_for_rotation(Rotation r){
+
+        table_layout_result.setVisibility(View.VISIBLE);
+        result_atpsvol.setText(r.getAtpsvol());
+        result_rtpsvol.setText(r.getRtpsvol());
+        result_somme_tpsvol.setText(r.getTpsvol());
+        result_repos_escale.setText(r.getTep());
+        result_rpc.setText(r.getRpc());
+        result_ir_menufrais.setText(r.getIrmenu());
+        result_ir_total.setText(r.getTotalir());
+        result_ptd_ircdg.setText(r.getPdj());
+        result_cha_cdg.setText(r.getChcdg());
+    }
+
+
+    /*****************************/
+    /***** fcts de selections ****/
+    public int[] getnumRotation_reg_esc(String reg,String esc) {
+        int[] retour0 = {0,0};
+        int[] retour1 = {1,0};
+        int[] retourelse = {0,0};
+        int ii = 0;
+        int found_id = 0;
+        for(int i=0; i<list.size(); i++) {
+            if(list.get(i).getCont().equals(reg) && list.get(i).getEsc().equals(esc)) {
+                found_id = i;
+                ii++;
+            }
+        }
+        if(ii <=0) return retour0;
+        if(ii == 1) {
+            retour1[1] = found_id;
+            return retour1;
+        }
+        retourelse[0] = ii;
+        return retourelse;
+    }
+
+    public int[] getnumOn_reg_esc(String reg,String esc) {
+        int[] retour0 = {0,0};
+        int found_id = 0;
+        int ii = 0;
+        ArrayList<Rotation> arx = new ArrayList<>();
+        for(int i=0; i<list.size(); i++) {
+            if(list.get(i).getCont().equals(reg) && list.get(i).getEsc().equals(esc)) {
+                found_id = Integer.valueOf(list.get(i).getOn());
+                arx.add(list.get(i));
+                ii++;
+            }
+        }
+        int num_ons = arx.size();
+        String[] ons = new String[num_ons];
+        for (int i = 0; i < num_ons;i++) {
+            ons[i] = arx.get(i).getOn();
+        }
+
+        List<String> listlocal = Arrays.asList(ons);
+        Set<String> set = new HashSet<String>(listlocal);
+        ons = new String[set.size()];
+        set.toArray(ons);
+
+        Arrays.sort(ons);
+        if(ons.length == 0) return retour0;
+        if(ons.length == 1) {
+            int[] retour1 = {1,found_id};
+            return retour1;
+        }
+        int[] retour2 = {ons.length,0};
+
+        return retour2;
+    }
+
+    /*****************************/
+
+
 
     public void showDialog() {
         dialog = new Dialog(this);
@@ -133,55 +581,9 @@ public class MainActivity extends AppCompatActivity {
         alert.getWindow().setLayout(width, height);
         alert.show();
     }
-    public void tutu() {
-/*
-String[] escales =  new String[202];
-        int ii = 1;
-        for(Rotation object : list) {
-            escales[ii] = object.getAtpsvol();
-        } */
 
 
-        ArrayList<Rotation> secondList = new ArrayList<Rotation>();
-  /**/
-         for (int counter = 0; counter < list.size(); counter++) {
-             Rotation r = list.get(counter);
-            // if (r.getEsc() == "ATL") {
-                 Log.i("KK", "== " + r.getAnumvol());
-                 secondList.add(r);
-           //  }
-        }
-        Log.i("KK", "== " + secondList.size());
-        CharSequence colors[] = new CharSequence[secondList.size()];
-        for (int counter = 0; counter < secondList.size(); counter++) {
-            Rotation r = secondList.get(counter);
-            colors[counter]= r.getCont()+ "/ "+r.getOn()+":"+r.getEsc()+ "/ "+ r.getAtpsvol()+ " / "+r.getAnumvol()+"-"+r.getRnumvol()+" / "+r.getAtpsvol();
-        }
-          //  for(Rotation article : list)
-          //{
-          // or equalsIgnoreCase or whatever your conditon is
-          //   if (article.getEsc().equalsIgnoreCase("ATL")) {
-          // do something
-          //  }
-          //  }
-         //  CharSequence colors[] = new CharSequence[] {"red", "green", "blue", "black"};
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick a color");
-        builder.setItems(colors, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // the user clicked on colors[which]
-                Log.i("KK","which = "+which);
-            }
-        });
-        builder.show();
-    }
-
-
-
-    public void initEscales() {
+    public void initEscalesx() {
         Rotation rotation1 = new Rotation();
         rotation1.setCont("ame");
         rotation1.setId("1");
@@ -3820,4 +4222,26 @@ String[] escales =  new String[202];
 
 
     }
+
+    public void initVariables() {
+        String ame = getResources().getString(R.string.ame);
+        String amo = getResources().getString(R.string.amo);
+        String asi = getResources().getString(R.string.asi);
+        String acoi = getResources().getString(R.string.acoi);
+        String amsu = getResources().getString(R.string.amsu);
+        name_regions = new String[5];
+        name_regions_short = new String[5];
+        name_regions[0] = ame;
+        name_regions[1] = amo;
+        name_regions[2] = asi;
+        name_regions[3] = acoi;
+        name_regions[4] = amsu;
+
+        name_regions_short[0] = "ame";
+        name_regions_short[1] = "amo";
+        name_regions_short[2] = "asi";
+        name_regions_short[3] = "acoi";
+        name_regions_short[4] = "amsu";
+    }
+
 }

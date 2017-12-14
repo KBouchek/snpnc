@@ -54,7 +54,7 @@ public class FlyIr extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-setTitle("SNPNC: FlyIR");
+        //this.setTitle("SNPNC: FlyIR");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -392,7 +392,7 @@ setTitle("SNPNC: FlyIR");
         for (int i = 0; i < nb_resultats_vols;i++) {
             name_vols[i] = "AF"+local_rotations.get(i).getAnumvol()+" - AF"+local_rotations.get(i).getRnumvol();
             vol_string_array[i] = local_rotations.get(i).getAnumvol()+"-"+local_rotations.get(i).getRnumvol();
-            last_visited_id = local_rotations.get(i);
+            //last_visited_id = local_rotations.get(i);
         }
         if(nb_resultats_vols <= 0) return;
         if(nb_resultats_vols == 1) {display_IR_for_rotation(last_visited_id);return;}
@@ -408,7 +408,11 @@ setTitle("SNPNC: FlyIR");
                 String vol = name_vols[position];
                 String vol_tv =  vol_string_array[position];
                 btnVols.setText(vol);
-                tv_vols.setText(vol_tv);
+                String replaceString= vol.replace(" ","");
+                String replaceString1= replaceString.replace("AF","");
+                //String copy = vol.replace('AF', '');
+                //tv_vols.setText(vol_tv);
+                tv_vols.setText(replaceString1);
 
                 Rotation r = new Rotation();
                 for(int i=0; i<list.size(); i++) {

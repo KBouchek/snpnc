@@ -32,13 +32,13 @@
         android:layout_marginTop="10dp"
         />
 
-        <Button
+      <Button
             android:id="@+id/btnDest"
-            android:visibility="gone"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
-            android:text="Escales"
+            android:text="To RSS"
             android:layout_alignParentTop="true"
             android:background="@drawable/buttonshape"
             android:layout_marginLeft="@dimen/fab_margin"
@@ -47,13 +47,13 @@
             android:layout_below="@id/btnRegion"
             />
 
-        <Button
-            android:id="@+id/btnOn"
-            android:visibility="gone"
+    <Button
+            android:id="@+id/btnSend"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
-            android:text="On"
+            android:text="Send"
             android:layout_alignParentTop="true"
             android:background="@drawable/buttonshape"
             android:layout_marginLeft="@dimen/fab_margin"

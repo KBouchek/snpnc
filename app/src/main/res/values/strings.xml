@@ -8,4 +8,6 @@
     <string name="asi">ASIE</string>
     <string name="acoi">ANTILLES-CARAÏBES-OCEAN INDIEN</string>
     <string name="amsu">AMÉRIQUE SUD</string>
+    <string name="title_activity_rss">Rss</string>
+    <string name="title_activity_send_mail">SNPNC Contact</string>
 </resources>

@@ -43,15 +43,27 @@ public class MainActivity extends AppCompatActivity {
 
 
         Button angryButton = (Button) findViewById(R.id.btnRegion);
-       // Button btnDest = (Button)findViewById(R.id.btnDest);
-      /* angryButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                tutu();
-            }
-        });*/
+       Button btnDest = (Button)findViewById(R.id.btnDest);
+        Button btnSend = (Button)findViewById(R.id.btnSend);
+
+
         angryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, FlyIr.class);
+                startActivity(intent);
+            }
+        });
+
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SendMail.class);
+                startActivity(intent);
+            }
+        });
+        btnDest.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Rss.class);
                 startActivity(intent);
             }
         });

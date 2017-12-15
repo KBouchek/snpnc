@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.snpnc.snpnc.FlyIr"
-    tools:showIn="@layout/activity_flyir">
+    tools:context="org.snpnc.snpnc.FlyIR"
+    tools:showIn="@layout/activity_fly_ir">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
->
+        android:background="@color/colorAccent"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -173,13 +173,13 @@
                             android:text="Aller"
                             android:textColor="#000000" />
 
-                    <TextView
-                        android:id="@+id/result_atpsvol"
-                        android:text="Row 3 column 2"
-                        android:layout_weight="1" android:background="@color/colorAccent"
-                        android:textColor="#000000"
-                        android:textSize="17dp"
-                        android:padding="18dip" android:gravity="center"/>
+                        <TextView
+                            android:id="@+id/result_atpsvol"
+                            android:text="Row 3 column 2"
+                            android:layout_weight="1" android:background="@color/colorAccent"
+                            android:textColor="#000000"
+                            android:textSize="17dp"
+                            android:padding="18dip" android:gravity="center"/>
                     </TableRow>
                     <TableRow
                         android:layout_height="wrap_content"

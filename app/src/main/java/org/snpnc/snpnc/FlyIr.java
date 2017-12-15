@@ -3,12 +3,17 @@ package org.snpnc.snpnc;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,13 +23,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class FlyIr extends AppCompatActivity {
+public class FlyIR extends AppCompatActivity {
     public Dialog dialog;
     public AlertDialog.Builder builder;
     public AlertDialog alert;
@@ -44,40 +47,38 @@ public class FlyIr extends AppCompatActivity {
             result_ir_menufrais,result_ir_total,
             result_ptd_ircdg,
             result_cha_cdg;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flyir);
+        setContentView(R.layout.activity_fly_ir);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //this.setTitle("SNPNC: FlyIR");
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setVisibility(View.GONE);
+        /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
-        });
+        });*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
+        final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
         list = new ArrayList<Rotation>();
 
-         btnRegion = (Button) findViewById(R.id.btnRegion);
-         btnEsc = (Button)findViewById(R.id.btnEsc);
-         btnOn = (Button)findViewById(R.id.btnOn);
-         btnVols = (Button)findViewById(R.id.btnVols);
+        btnRegion = (Button) findViewById(R.id.btnRegion);
+        btnEsc = (Button)findViewById(R.id.btnEsc);
+        btnOn = (Button)findViewById(R.id.btnOn);
+        btnVols = (Button)findViewById(R.id.btnVols);
 
-         tv_region = (TextView)findViewById(R.id.regx) ;
-         tv_esc = (TextView)findViewById(R.id.esc) ;
-         tv_on = (TextView)findViewById(R.id.on) ;
-         tv_vols = (TextView)findViewById(R.id.vols) ;
+        tv_region = (TextView)findViewById(R.id.regx) ;
+        tv_esc = (TextView)findViewById(R.id.esc) ;
+        tv_on = (TextView)findViewById(R.id.on) ;
+        tv_vols = (TextView)findViewById(R.id.vols) ;
 
         table_layout_result = (TableLayout)findViewById(R.id.table_layout_result);
 
@@ -94,7 +95,6 @@ public class FlyIr extends AppCompatActivity {
 
         width = (int)(getResources().getDisplayMetrics().widthPixels*0.80);
         height = (int)(getResources().getDisplayMetrics().heightPixels*0.70);
-
 
         initEscalesx();
         initVariables();
@@ -117,28 +117,33 @@ public class FlyIr extends AppCompatActivity {
         btnRegion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnRegion.startAnimation(animAlpha);
                 clickRegion();
             }
         });
         btnEsc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnEsc.startAnimation(animAlpha);
                 clickEscale();
             }
         });
         btnOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnOn.startAnimation(animAlpha);
                 clickOn();
             }
         });
         btnVols.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnVols.startAnimation(animAlpha);
                 clickVols();
             }
         });
 
+        btnRegion.startAnimation(animAlpha);
     }
 
     public void clickRegion() {
@@ -206,7 +211,7 @@ public class FlyIr extends AppCompatActivity {
         } else return;
 
         for(int i=0; i<list.size(); i++) {
-           if(list.get(i).getCont().equals(region_string)) {
+            if(list.get(i).getCont().equals(region_string)) {
                 local_rotations.add(list.get(i));
             }
         }
@@ -274,11 +279,11 @@ public class FlyIr extends AppCompatActivity {
 
     public void clickOn() {
         Log.i("KK", " clickOn Okkkkkkkkkkk");
-     tv_on.setText("");
+        tv_on.setText("");
 
-      btnVols.setText("Vols");
-      btnVols.setVisibility(View.GONE);
-      tv_vols.setText("");
+        btnVols.setText("Vols");
+        btnVols.setVisibility(View.GONE);
+        tv_vols.setText("");
 
         table_layout_result.setVisibility(View.GONE);
 
@@ -311,7 +316,7 @@ public class FlyIr extends AppCompatActivity {
             name_on[i] = local_rotations.get(i).getOn();
         }
 
-       List<String> listlocal = Arrays.asList(name_on);
+        List<String> listlocal = Arrays.asList(name_on);
         Set<String> set = new HashSet<String>(listlocal);
         name_on = new String[set.size()];
         set.toArray(name_on);
@@ -334,7 +339,7 @@ public class FlyIr extends AppCompatActivity {
                 for(int i=0; i<list.size(); i++) {
                     if(list.get(i).getCont().equals(tv_region.getText().toString())
                             && list.get(i).getEsc().equals(tv_esc.getText().toString())
-                             && list.get(i).getOn().equals(on)) {
+                            && list.get(i).getOn().equals(on)) {
                         local_rotations.add(list.get(i));
                         found_rot_id = i;
                     }
@@ -418,7 +423,7 @@ public class FlyIr extends AppCompatActivity {
                 for(int i=0; i<list.size(); i++) {
                     String vol_search = list.get(i).getAnumvol()+"-"+list.get(i).getRnumvol();
                     if(list.get(i).getCont().equals(tv_region.getText().toString())
-                             && list.get(i).getEsc().equals(tv_esc.getText().toString())
+                            && list.get(i).getEsc().equals(tv_esc.getText().toString())
                             && vol_search.equals(vol_tv)) {
                         r = list.get(i);
                         display_IR_for_rotation(r);
@@ -4247,5 +4252,4 @@ public class FlyIr extends AppCompatActivity {
         name_regions_short[3] = "acoi";
         name_regions_short[4] = "amsu";
     }
-
 }

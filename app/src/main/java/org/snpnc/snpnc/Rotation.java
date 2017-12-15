@@ -1,13 +1,10 @@
 package org.snpnc.snpnc;
 
-import android.util.Log;
-
 /**
- * Created by K on 12/12/2017.
+ * Created by K on 15/12/2017.
  */
 
 public class Rotation {
-
     public String  id;
     public String cont;
     public String esc;
@@ -24,7 +21,6 @@ public class Rotation {
     public String pdj;
     public String chcdg;
     public String tps_vol;
-
 
     public String getId() {
         return id;
@@ -181,6 +177,4 @@ public class Rotation {
 
 
     }
-
-
 }
